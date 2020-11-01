@@ -1,0 +1,6 @@
+this is a test string
+key1=[válûè1~€]
+key2=[válûè2~€]
+
+key3= [válûè1~€]
+key4=     [válûè2~€]

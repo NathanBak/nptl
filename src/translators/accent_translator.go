@@ -14,7 +14,7 @@ type AccentTranslator struct {
 }
 
 // Translate implements the nptl.Translator.Translate() method.
-func (t *AccentTranslator) Translate(ctx context.Context, source []rune) ([]rune, error) {
+func (t *AccentTranslator) Translate(ctx context.Context, source nptl.Runes) (nptl.Runes, error) {
 	t.setupOnce.Do(func() {
 		t.extender = &SimpleExtender{
 			Prefix:   nptl.Runes{'['},
