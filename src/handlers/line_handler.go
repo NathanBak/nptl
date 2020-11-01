@@ -7,7 +7,6 @@ import (
 	"io"
 
 	"github.com/NathanBak/nptl/src/nptl"
-	"github.com/NathanBak/nptl/src/runes"
 )
 
 type LineHandler struct {
@@ -29,7 +28,7 @@ func (h *LineHandler) Handle(ctx context.Context, source []byte) ([]byte, error)
 		}
 
 		if len(line) > 0 || h.TranslateBlankLines {
-			rs, err2 := runes.FromBytes(line)
+			rs, err2 := nptl.FromBytes(line)
 			if err2 != nil {
 				return out, err2
 			}

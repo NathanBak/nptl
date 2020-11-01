@@ -8,7 +8,6 @@ import (
 	"unicode"
 
 	"github.com/NathanBak/nptl/src/nptl"
-	"github.com/NathanBak/nptl/src/runes"
 )
 
 type KeyValueHandler struct {
@@ -29,7 +28,7 @@ func (h *KeyValueHandler) Handle(ctx context.Context, source []byte) ([]byte, er
 			return out, err
 		}
 
-		rs, err2 := runes.FromBytes(line)
+		rs, err2 := nptl.FromBytes(line)
 		if err2 != nil {
 			return out, err2
 		}
@@ -65,9 +64,9 @@ func (h *KeyValueHandler) Handle(ctx context.Context, source []byte) ([]byte, er
 	return out, nil
 }
 
-func (h *KeyValueHandler) split(rs runes.Runes) (runes.Runes, runes.Runes, error) {
-	key := runes.Runes{}
-	val := runes.Runes{}
+func (h *KeyValueHandler) split(rs nptl.Runes) (nptl.Runes, nptl.Runes, error) {
+	key := nptl.Runes{}
+	val := nptl.Runes{}
 
 	foundEquals := false
 	keyDone := false

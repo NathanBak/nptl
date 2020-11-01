@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/NathanBak/nptl/src/nptl"
-	"github.com/NathanBak/nptl/src/runes"
 )
 
 type TextHandler struct {
@@ -13,7 +12,7 @@ type TextHandler struct {
 
 func (h *TextHandler) Handle(ctx context.Context, source []byte) ([]byte, error) {
 
-	rs, err := runes.FromBytes(source)
+	rs, err := nptl.FromBytes(source)
 	if err != nil {
 		return nil, err
 	}

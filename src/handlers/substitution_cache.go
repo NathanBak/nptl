@@ -4,17 +4,17 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/NathanBak/nptl/src/runes"
+	"github.com/NathanBak/nptl/src/nptl"
 )
 
 const substitutionRune rune = '\uEEEE'
 
 type SubstitutionCache struct {
-	queue []runes.Runes
+	queue []nptl.Runes
 }
 
-func (c *SubstitutionCache) ReplaceAll(rs runes.Runes) (runes.Runes, error) {
-	out := runes.Runes{}
+func (c *SubstitutionCache) ReplaceAll(rs nptl.Runes) (nptl.Runes, error) {
+	out := nptl.Runes{}
 
 	for _, r := range rs {
 		if r == substitutionRune {
@@ -36,8 +36,8 @@ func (c *SubstitutionCache) ReplaceAll(rs runes.Runes) (runes.Runes, error) {
 	return out, nil
 }
 
-func (c *SubstitutionCache) Substitute(rs, search, replace runes.Runes) (runes.Runes, error) {
-	out := runes.Runes{}
+func (c *SubstitutionCache) Substitute(rs, search, replace nptl.Runes) (nptl.Runes, error) {
+	out := nptl.Runes{}
 
 	if len(search) < 1 {
 		return out, errors.New("search Runes cannot be empty")
@@ -81,12 +81,12 @@ func (c *SubstitutionCache) Substitute(rs, search, replace runes.Runes) (runes.R
 	return out, nil
 }
 
-func (c *SubstitutionCache) SubstituteStrings(rs runes.Runes, search, replace string) (runes.Runes, error) {
-	s, err := runes.FromString(search)
+func (c *SubstitutionCache) SubstituteStrings(rs nptl.Runes, search, replace string) (nptl.Runes, error) {
+	s, err := nptl.FromString(search)
 	if err != nil {
 		return nil, err
 	}
-	r, err := runes.FromString(replace)
+	r, err := nptl.FromString(replace)
 	if err != nil {
 		return nil, err
 	}

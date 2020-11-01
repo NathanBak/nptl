@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	"github.com/NathanBak/nptl/src/nptl"
-	"github.com/NathanBak/nptl/src/runes"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message/pipeline"
 )
@@ -30,7 +29,7 @@ func (h *GoMessageHandler) Handle(ctx context.Context, source []byte) ([]byte, e
 	}
 
 	for i, m := range ms.Messages {
-		rs, err := runes.FromString(m.Message.Msg)
+		rs, err := nptl.FromString(m.Message.Msg)
 		if err != nil {
 			return nil, err
 		}

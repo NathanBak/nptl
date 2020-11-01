@@ -3,16 +3,24 @@ package translators
 import (
 	"context"
 	"sync"
+
+	"github.com/NathanBak/nptl/src/nptl"
 )
 
+// The AccentTranslator simulates translation into Western European languages.
 type AccentTranslator struct {
 	extender  Extender
 	setupOnce sync.Once
 }
 
+// Translate implements the nptl.Translator.Translate() method.
 func (t *AccentTranslator) Translate(ctx context.Context, source []rune) ([]rune, error) {
 	t.setupOnce.Do(func() {
-		t.extender = &SimpleExtender{}
+		t.extender = &SimpleExtender{
+			Prefix:   nptl.Runes{'['},
+			Suffix:   nptl.Runes{'€', ']'},
+			Extender: '~',
+		}
 	})
 
 	response := []rune{}
@@ -26,7 +34,7 @@ func (t *AccentTranslator) Translate(ctx context.Context, source []rune) ([]rune
 		}
 	}
 
-	return t.extender.Extend(ctx, source, response, []rune{'['}, []rune{'€', ']'}, '~')
+	return t.extender.Extend(ctx, source, response)
 }
 
 var replacements = map[rune]rune{

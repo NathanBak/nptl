@@ -1,22 +1,50 @@
 package translators
 
-import "context"
+import (
+	"context"
 
-type SimpleExtender struct{}
+	"github.com/NathanBak/nptl/src/nptl"
+)
 
-func (e *SimpleExtender) Extend(ctx context.Context, source, target, prefix, suffix []rune, extenderRune rune) ([]rune, error) {
-	response := []rune{}
-	response = append(response, prefix...)
-	response = append(response, target...)
-	response = append(response, extenderRune)
+// SimpleExtender sticks the prefix on the beginning, the suffix on the end, and then inserts the
+// extender rune until the new target is at least 20% longer than the original source Runes.
+type SimpleExtender struct {
+	Prefix          nptl.Runes
+	Suffix          nptl.Runes
+	Extender        rune
+	ExtendFromFront bool
+}
 
-	targetLength := int((float32(len(source)) * 1.2))
+// Extend implements the Extender.Extend() method.
+func (e *SimpleExtender) Extend(ctx context.Context, source, target []rune) ([]rune, error) {
 
-	for len(response) < targetLength-1 {
-		response = append(response, extenderRune)
+	numberToAdd := 0
+	if e.Extender != 0 {
+		targetLength := int((float32(len(source)) * 1.2))
+		numberToAdd = targetLength - len(source) - len(e.Prefix) - len(e.Suffix)
+		if numberToAdd < 1 {
+			numberToAdd = 1
+		}
 	}
 
-	response = append(response, suffix...)
+	response := []rune{}
+	response = append(response, e.Prefix...)
+
+	if e.ExtendFromFront {
+		for i := 0; i < numberToAdd; i++ {
+			response = append(response, e.Extender)
+		}
+	}
+
+	response = append(response, target...)
+
+	if !e.ExtendFromFront {
+		for i := 0; i < numberToAdd; i++ {
+			response = append(response, e.Extender)
+		}
+	}
+
+	response = append(response, e.Suffix...)
 
 	return response, nil
 }

@@ -1,7 +1,11 @@
 package nptl
 
-import "context"
+import (
+	"context"
+)
 
+// A Translator is able to apply a pseudo translation algorithm to Runes.
 type Translator interface {
-	Translate(context.Context, []rune) ([]rune, error)
+	// Translate accepts Runes and returns a pseudo translated variant.
+	Translate(context.Context, Runes) (Runes, error)
 }
